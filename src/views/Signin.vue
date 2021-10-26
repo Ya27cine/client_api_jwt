@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-md-6 mx-auto">
-                <form @submit.prevent="signin()">
+                <form @submit.prevent="_submit()">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input v-model="user.email" type="email"  id="email" class="form-control">
@@ -24,7 +24,7 @@
 </template>
 <script>
 
-import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
 
@@ -38,11 +38,12 @@ export default {
     },
 
     methods: {
-         async signin(){
-            const reponse = 
-                        await axios.post('auth/login', this.user);
-            console.log( reponse.data.user.id );
-        }
+            ...mapActions({
+                'signin': 'auth/signin'
+            }),
+          _submit(){
+              this.signin( this.user );
+          }
     },
     
 }
