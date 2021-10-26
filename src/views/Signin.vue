@@ -40,7 +40,7 @@ export default {
     methods: {
          async signin(){
             const reponse = 
-                        await axios.post('http://127.0.0.1:8000/api/auth/login', this.user);
+                        await axios.post('auth/login', this.user);
             console.log( reponse.data.user.id );
         }
     },
