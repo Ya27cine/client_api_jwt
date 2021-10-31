@@ -18,7 +18,7 @@ export default{
     },
     getters: {
         isAuth(state){
-            return state.user && state.token;
+            return (state.user && state.token);
         },
         getUser(state){
             return state.user;
@@ -42,7 +42,7 @@ export default{
         },
 
         // ============= Action  attempt : 
-        async attempt({ commit, state }, token){
+        async attempt({ commit, state}, token){
           //  console.log( token );
 
             try {
@@ -56,7 +56,6 @@ export default{
 
                 commit('setUser', reponse.data);
 
-                console.log( "action attempt : "+reponse.data.name);
             } catch (error) {
                 console.log( "action attempt :error: => "+error );
                 commit('setToken', null);
