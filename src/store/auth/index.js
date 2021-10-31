@@ -16,7 +16,14 @@ export default{
             state.user = data;
     },
     },
-    getters: {},
+    getters: {
+        isAuth(state){
+            return state.user && state.token;
+        },
+        getUser(state){
+            return state.user;
+        }
+    },
     actions:{
 
         // ============= Action  SignIn : 
@@ -24,10 +31,10 @@ export default{
             console.log( paramUser );
             try {
                 const reponse = 
-                await axios.post('auth/login', paramUser);
+                    await axios.post('auth/login', paramUser);
                 console.log( reponse.data.user.id );
 
-                dispatch('attempt', reponse.data.access_token);
+                return dispatch('attempt', reponse.data.access_token);
 
             } catch (error) {
                 console.log( "action signin :error: => "+error );
@@ -35,22 +42,25 @@ export default{
         },
 
         // ============= Action  attempt : 
-        async attempt({ commit }, token){
-            console.log( token );
+        async attempt({ commit, state }, token){
+          //  console.log( token );
 
             try {
-                const myheaders = {
-                    headers: {'Authorization': 'Bearer '+token}
+                
+                if(token){
+                    commit('setToken', token); // and run subscriber 
                 }
+                if(!state.token) return;
 
-                const reponse =  await axios.get('auth/user-profile', myheaders);
+                const reponse =  await axios.get('auth/user-profile');
 
-                commit('setToken', token);
                 commit('setUser', reponse.data);
 
                 console.log( "action attempt : "+reponse.data.name);
             } catch (error) {
                 console.log( "action attempt :error: => "+error );
+                commit('setToken', null);
+                commit('setUser', null);
             }
         },
 

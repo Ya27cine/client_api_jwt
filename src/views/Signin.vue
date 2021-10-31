@@ -42,7 +42,9 @@ export default {
                 'signin': 'auth/signin'
             }),
           _submit(){
-              this.signin( this.user );
+              this.signin( this.user ).then(
+                  () => this.$router.replace({name: 'Dashboard'})
+              )
           }
     },
     
