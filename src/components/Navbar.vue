@@ -9,21 +9,41 @@
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavId">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item">
+                <li v-if="isAuth" class="nav-item">
                     <Router-link class="nav-link" :to="{name: 'Dashboard'}">Dashboard </Router-link>
                 </li>
             </ul>
-            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">       
-                <li class="nav-item">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">      
+
+                <li  v-if="!isAuth" class="nav-item">
                     <Router-link class="nav-link" :to="{name: 'Signin'}">Signin </Router-link>
                 </li>
+
+                <li v-if="isAuth"  class="nav-item">
+                    <a class="nav-link" href="#">{{ user.name}} </a>
+                </li>
+
+                <li v-if="isAuth" class="nav-item">
+                    <a class="nav-link" href="#">Logout </a>
+                </li>
+
             </ul>
+            
         </div>
     </nav>
 
 </template>
 <script>
+    import {mapGetters} from 'vuex'
+
 export default {
+    computed: {
+
+        ...mapGetters({
+            'isAuth': 'auth/isAuth',
+            'user': 'auth/getUser'
+        })
+    }
     
 }
 </script>
